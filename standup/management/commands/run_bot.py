@@ -347,10 +347,9 @@ class Command(BaseCommand):
                         continue
                     for participant in to_notify:
                         did = int(participant.user.discord_id)
-                        user = bot.get_user(did)
                         for i in range(5):
+                            user = bot.get_user(did)
                             try:
-
                                 if not participant.read_only:
                                     await user.send(
                                         f'Please answer the questions '
