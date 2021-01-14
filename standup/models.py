@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
-from django.utils import timezone
 from ordered_model.models import OrderedModel
 from django.utils.crypto import get_random_string
 from django.urls import reverse
@@ -32,7 +31,6 @@ class Server(models.Model):
             self.slug = slugify(self.name)
 
         super(Server, self).save(*args, **kwargs)
-
 
     def __str__(self):
         return self.name
@@ -71,37 +69,21 @@ class StandupType(models.Model):
     public_publish_after = models.DurationField(default=datetime.timedelta(hours=24))
     publish_to_channel = models.BooleanField(default=False, help_text="publish to the channel even if it's a private standup")
 
-
     def in_timeslot(self, localtime):
         if not localtime:
             localtime = timezone.localtime()
 
         wd = localtime.weekday()
 
-        if wd == 0:
-            if self.create_on_monday:
-                return True
-        elif wd == 1:
-            if self.create_on_tuesday:
-                return True
-        elif wd == 2:
-            if self.create_on_wednesday:
-                return True
-        elif wd == 3:
-            if self.create_on_thursday:
-                return True
-        elif wd == 4:
-            if self.create_on_friday:
-                return True
-        elif wd == 5:
-            if self.create_on_saturday:
-                return True
-        else:
-            if self.create_on_sunday:
-                return True
-
-        return False
-
+        return (
+            (wd == 0 and self.create_on_monday)
+            or (wd == 1 and self.create_on_tuesday)
+            or (wd == 2 and self.create_on_wednesday)
+            or (wd == 3 and self.create_on_thursday)
+            or (wd == 4 and self.create_on_friday)
+            or (wd == 5 and self.create_on_saturday)
+            or self.create_on_sunday
+        )
 
     def __str__(self):
         return self.name
