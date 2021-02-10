@@ -26,20 +26,6 @@ DEBUG = bool(os.getenv('DEBUG'))
 ALLOWED_HOSTS = [os.getenv('DEFAULT_HOST', '127.0.0.1')]
 
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'INFO',
-    },
-}
-
 # Application definition
 
 INSTALLED_APPS = [
