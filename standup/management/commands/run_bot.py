@@ -351,6 +351,7 @@ class Command(BaseCommand):
                         user = bot.get_user(did)
                         for i in range(5):
                             try:
+
                                 if not participant.read_only:
                                     await user.send(
                                         f'Please answer the questions '
